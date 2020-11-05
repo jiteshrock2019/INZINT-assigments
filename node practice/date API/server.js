@@ -1,6 +1,35 @@
 const express = require("express");
+const fs = require('fs');
+
 const app = express();
 
+app.get('/textFile', (req,res) =>{
+    fs.readFile('./node.txt', (err, data) =>{
+        if(err){
+            console.log("the read file error => "+ err);
+        }
+        else{
+            res.send(data.toString());
+        }
+
+    });
+    fs.writeFile('./created.txt','this file is created using the writeFile function of the node',() =>{
+       console.log("the file is created.");
+    //    res.send(data.toString());
+    })
+});
+
+// app.get('/pdfFile', (req,res) =>{
+//     fs.readFile('./notes.pdf', (err, data) =>{
+//         if(err){
+//             console.log("the read file error => "+ err);
+//         }
+//         else{
+//             res.send(data.toString());
+//         }
+
+// });
+// });
 
 app.get('/dateFormat', (req, res) =>{
 
