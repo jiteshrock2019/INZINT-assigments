@@ -1,4 +1,8 @@
-
+const pdf = require("pdf-creator-node");
+const fs = require("fs");
+var path = require("path");
+const open = require("open");
+const html = fs.readFileSync("./documents/index.js", "utf8");
 
 module.exports = (app) => {
   const vat = require("../controllers/controllerroutes");
@@ -19,14 +23,40 @@ module.exports = (app) => {
 
   //pdf generation
 
-// POST route PDF generation and fetching of the data
- app.post("create-pdf", (req, res) => {
-  pdf.create(pdfTemplate(req.body), {}).toFile("result.pdf", (err) => {
-    if (err) {
-      res.send(Promise.reject());
-    }
+  // POST route PDF generation and fetching of the data
+  app.post("/create-pdf", (req, res) => {
+    console.log(req.body);
+    var document = {
+      html: html,
+      data: {
+        product: req.body,
+      },
+      path: "../documents/" + Date.now() + ".pdf",
+    };
+    console.log("document>>>>>>>>>>>>>", document);
 
-    res.send(Promise.resolve());
+    var options = {
+      format: "A4",
+      orientation: "potrait",
+      border: "10mm",
+    };
+
+    console.log("document>>>>>>>>>>>>>", options);
+
+    pdf
+      .create(document, options)
+      .then((res) => {
+        console.log(res);
+        open(res.filename);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   });
-});
-  };
+
+  //GET route Send the generated pdf to the client
+  app.get("/fetch-pdf", (req, res) => {
+    res.sendFile(`${__dirname}/result.pdf`);
+  });
+};
+ 

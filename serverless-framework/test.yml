@@ -1,0 +1,22 @@
+Person:
+  name: "batman"
+  age: 30
+  salary: 500000
+  hasGirlfriend: true
+
+Customer:
+  Companies:
+    - Puma
+    - Addidas
+    - Boat
+    - Realme
+
+movies:
+  author:
+    id: 1
+    name: "The Dark Night"
+
+Friends:
+  - id: 1 
+    name: "Ram"
+  - { id: 2, name: Shyam}
